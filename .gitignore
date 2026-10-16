@@ -1,0 +1,13 @@
+# Ambiente virtual
+.venv/
+
+# Arquivos gerados pelo Python e pela instalação
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Dados reais: nunca versionar
+*.zip
+conversations.json
+manifest-*.json
+saida/
