@@ -1,0 +1,39 @@
+[
+  {
+    "uuid": "conv-0001",
+    "name": "Conversa de teste",
+    "created_at": "2026-10-10T22:50:00+00:00",
+    "updated_at": "2026-10-10T23:00:00+00:00",
+    "chat_messages": [
+      {
+        "sender": "human",
+        "text": "Olá",
+        "content": [{"type": "text", "text": "Olá"}],
+        "created_at": "2026-10-10T22:50:00+00:00"
+      },
+      {
+        "sender": "assistant",
+        "text": "This block is not supported on your current device yet.",
+        "content": [{"type": "tool_use"}],
+        "created_at": "2026-10-10T22:51:00+00:00"
+      },
+      {
+        "sender": "assistant",
+        "text": "texto antigo",
+        "content": [
+          {"type": "text", "text": "Primeira parte"},
+          {"type": "tool_use"},
+          {"type": "text", "text": "Segunda parte"}
+        ],
+        "created_at": "2026-10-10T22:52:00+00:00"
+      }
+    ]
+  },
+  {
+    "uuid": "conv-0002",
+    "name": "",
+    "created_at": "2026-10-11T10:00:00+00:00",
+    "updated_at": "2026-10-11T10:00:00+00:00",
+    "chat_messages": []
+  }
+]
