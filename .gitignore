@@ -11,3 +11,6 @@ __pycache__/
 conversations.json
 manifest-*.json
 saida/
+
+# Variáveis de ambiente (o .env.example pode ser versionado)
+.env
