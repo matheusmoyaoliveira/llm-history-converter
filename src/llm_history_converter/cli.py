@@ -8,6 +8,18 @@ from llm_history_converter.writer import write
 ADAPTERS = {"claude": claude.load}
 
 
+def _count(value: int, singular: str, plural: str) -> str:
+    return f"{value} {singular if value == 1 else plural}"
+
+
+def format_summary(counts: dict[str, int]) -> str:
+    return (
+        f"{_count(counts['new'], 'nova', 'novas')}, "
+        f"{_count(counts['updated'], 'atualizada', 'atualizadas')}, "
+        f"{counts['unchanged']} sem mudança"
+    )
+
+
 def main() -> None:
     parser = argparse.ArgumentParser(
         description="Converte exports de chats de IA em arquivos Markdown."
@@ -30,10 +42,7 @@ def main() -> None:
         state[state_key(conversation)] = conversation.updated_at.isoformat()
     save_state(state, args.output)
 
-    print(
-        f"{counts['new']} novas, {counts['updated']} atualizadas, "
-        f"{counts['unchanged']} sem mudança"
-    )
+    print(format_summary(counts))
 
 
 if __name__ == "__main__":
