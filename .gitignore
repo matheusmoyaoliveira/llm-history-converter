@@ -1,0 +1,16 @@
+# Ambiente virtual
+.venv/
+
+# Arquivos gerados pelo Python e pela instalação
+__pycache__/
+*.pyc
+*.egg-info/
+
+# Dados reais: nunca versionar
+*.zip
+conversations.json
+manifest-*.json
+saida/
+
+# Variáveis de ambiente (o .env.example pode ser versionado)
+.env
