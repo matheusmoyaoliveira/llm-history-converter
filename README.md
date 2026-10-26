@@ -16,6 +16,8 @@ source .venv/Scripts/activate   # Windows (Git Bash); on Linux/macOS: source .ve
 pip install -e ".[dev]"
 ```
 
+On Windows PowerShell, activate the virtual environment with `.venv\Scripts\Activate.ps1` instead.
+
 ## Usage
 
 ```bash
@@ -25,6 +27,7 @@ llm-history-converter claude path/to/conversations.json path/to/output
 - `claude` is the source of the export.
 - `conversations.json` is the file inside the export zip.
 - The output folder is created if it does not exist.
+- Paths may start with `~` for your home folder, in any shell (Git Bash, PowerShell, Linux or macOS), for example `~/exports/conversations.json`.
 
 Runs are incremental. The tool keeps a `.state.json` file in the output folder with the last update time of each conversation, and on the next run it only writes conversations that are new or were updated since then. At the end it prints a summary (the CLI messages are in Portuguese):
 

@@ -20,15 +20,23 @@ def format_summary(counts: dict[str, int]) -> str:
     )
 
 
-def main() -> None:
+def _path(value: str) -> Path:
+    return Path(value).expanduser()
+
+
+def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Converte exports de chats de IA em arquivos Markdown."
     )
     parser.add_argument("source", choices=ADAPTERS.keys(), help="De onde veio o export")
-    parser.add_argument("input", type=Path, help="Arquivo do export, como conversations.json")
-    parser.add_argument("output", type=Path, help="Pasta onde os arquivos serão gravados")
+    parser.add_argument("input", type=_path, help="Arquivo do export, como conversations.json")
+    parser.add_argument("output", type=_path, help="Pasta onde os arquivos serão gravados")
     parser.add_argument("--full", action="store_true", help="Ignora o estado e converte tudo de novo")
-    args = parser.parse_args()
+    return parser
+
+
+def main() -> None:
+    args = build_parser().parse_args()
 
     conversations = ADAPTERS[args.source](args.input)
     state = {} if args.full else load_state(args.output)
