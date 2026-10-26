@@ -2,6 +2,7 @@ import json
 from datetime import datetime
 from pathlib import Path
 
+from llm_history_converter.adapters.claude_cards import render_card
 from llm_history_converter.models import Conversation, Message
 
 SOURCE = "claude"
@@ -11,11 +12,19 @@ def _parse_date(value: str) -> datetime:
     return datetime.fromisoformat(value)
 
 
+def _block_text(block: dict) -> str:
+    if block.get("type") == "text":
+        return block.get("text", "")
+    if block.get("type") == "tool_use":
+        return render_card(block)
+    return ""
+
+
 def _message_text(raw: dict) -> str:
     blocks = raw.get("content")
     if not blocks:
         return raw.get("text", "")
-    parts = [b.get("text", "") for b in blocks if b.get("type") == "text"]
+    parts = [_block_text(b) for b in blocks]
     return "\n\n".join(p for p in parts if p)
 
 
