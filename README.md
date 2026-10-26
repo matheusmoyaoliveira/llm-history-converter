@@ -66,14 +66,14 @@ Layers, a rain jacket and comfortable shoes.
 ```text
 src/llm_history_converter/
 ├── models.py      # common model: Conversation and Message
-├── adapters/      # one adapter per source (claude.py)
+├── adapters/      # one adapter per source (claude.py, plus claude_cards.py)
 ├── writer.py      # turns a Conversation into a Markdown file
 ├── state.py       # incremental state (.state.json)
 └── cli.py         # the llm-history-converter command
 ```
 
 - **Common model:** every source is translated into the same `Conversation` and `Message` dataclasses, so the rest of the code does not depend on any export format.
-- **Adapters:** each source has a module with a `load(path)` function that returns a list of `Conversation`. The Claude adapter keeps only text blocks and skips messages that end up empty. Adding a source means adding an adapter and registering it in `cli.py`.
+- **Adapters:** each source has a module with a `load(path)` function that returns a list of `Conversation`. The Claude adapter keeps text blocks, turns display cards (step-by-step guides, questions, message drafts, options, comparisons, links, quizzes and charts) into Markdown with `claude_cards.py`, and skips messages that end up empty. Adding a source means adding an adapter and registering it in `cli.py`.
 - **Writer:** builds the Markdown (frontmatter plus messages) and saves the file.
 - **State:** stores the `updated_at` of each conversation under a `source:id` key and classifies each conversation as new, updated or unchanged. A conversation counts as updated only if its `updated_at` is later than the stored one, so running an older export after a newer one rewrites nothing.
 
@@ -88,7 +88,7 @@ The tests use a small fictional export in `tests/fixtures/` and pytest's tempora
 ## Known limitations
 
 - **Missing conversations:** the Claude export leaves some conversations out, so they cannot be converted.
-- **Tool cards:** the content of tool cards (such as step-by-step tool calls) is lost. Only text blocks are converted.
+- **Tool calls:** display cards are converted, but other tool calls (running commands, web searches, file edits) and their results are left out, as are thinking blocks, images and attached documents.
 - **Edited messages:** when a message is edited, the conversation branches. Branches are not handled: all messages are written in the order they appear in the export.
 - **Projects:** the export does not link conversations to the projects they belong to, so the output has no project information.
 

@@ -1,0 +1,65 @@
+[
+  {
+    "uuid": "conv-cards",
+    "name": "Conversa com cartões",
+    "created_at": "2026-10-20T12:00:00+00:00",
+    "updated_at": "2026-10-20T12:10:00+00:00",
+    "chat_messages": [
+      {
+        "sender": "human",
+        "text": "Como publico o site?",
+        "content": [{"type": "text", "text": "Como publico o site?"}],
+        "created_at": "2026-10-20T12:00:00+00:00"
+      },
+      {
+        "sender": "assistant",
+        "text": "This block is not supported on your current device yet.",
+        "content": [
+          {"type": "text", "text": "Siga estes passos:"},
+          {
+            "type": "tool_use",
+            "name": "step_card_display_v0",
+            "input": {
+              "summary": "Publicar o site",
+              "steps": [{"title": "Gerar o build", "description": "Rode npm run build."}]
+            }
+          },
+          {
+            "type": "tool_result",
+            "name": "step_card_display_v0",
+            "content": [{"type": "text", "text": "{}"}]
+          },
+          {"type": "text", "text": "Qualquer dúvida, me chame."}
+        ],
+        "created_at": "2026-10-20T12:01:00+00:00"
+      },
+      {
+        "sender": "assistant",
+        "text": "This block is not supported on your current device yet.",
+        "content": [
+          {
+            "type": "tool_use",
+            "name": "ask_user_input_v0",
+            "input": {"questions": [{"question": "Seguimos?", "options": ["Sim", "Não"]}]}
+          },
+          {
+            "type": "tool_result",
+            "name": "ask_user_input_v0",
+            "content": [{"type": "text", "text": "{}"}]
+          }
+        ],
+        "created_at": "2026-10-20T12:02:00+00:00"
+      },
+      {
+        "sender": "assistant",
+        "text": "This block is not supported on your current device yet.",
+        "content": [
+          {"type": "tool_use", "name": "bash_tool", "input": {"command": "ls"}},
+          {"type": "tool_result", "name": "bash_tool", "content": [{"type": "text", "text": "README.md"}]},
+          {"type": "text", "text": "Pronto."}
+        ],
+        "created_at": "2026-10-20T12:03:00+00:00"
+      }
+    ]
+  }
+]
