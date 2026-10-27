@@ -35,7 +35,9 @@ Runs are incremental. The tool keeps a `.state.json` file in the output folder w
 3 novas, 2 atualizadas, 40 sem mudança
 ```
 
-That is 3 new, 2 updated and 40 unchanged conversations. To ignore the state and convert everything again, use `--full`:
+That is 3 new, 2 updated and 40 unchanged conversations. If the state has conversations that are not in the current export (the Claude export sometimes leaves conversations out), the tool lists the first 8 characters of their ids. Their Markdown files are kept.
+
+To ignore the state and convert everything again, use `--full`:
 
 ```bash
 llm-history-converter claude path/to/conversations-000.zip path/to/output --full
