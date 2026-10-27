@@ -17,3 +17,4 @@ class Conversation:
     created_at: datetime
     updated_at: datetime
     messages: list[Message] = field(default_factory=list)
+    summary: str | None = None

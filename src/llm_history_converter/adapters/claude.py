@@ -40,6 +40,7 @@ def _to_conversation(raw: dict) -> Conversation:
     return Conversation(
         id=raw["uuid"],
         title=raw.get("name") or "(sem título)",
+        summary=(raw.get("summary") or "").strip() or None,
         source=SOURCE,
         created_at=_parse_date(raw["created_at"]),
         updated_at=_parse_date(raw["updated_at"]),
