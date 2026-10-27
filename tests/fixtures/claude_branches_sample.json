@@ -1,0 +1,74 @@
+[
+  {
+    "uuid": "conv-branch",
+    "name": "Conversa com mensagem editada",
+    "summary": "",
+    "created_at": "2026-10-20T12:00:00+00:00",
+    "updated_at": "2026-10-20T12:10:00+00:00",
+    "chat_messages": [
+      {
+        "uuid": "m1", "parent_message_uuid": "00000000-0000-4000-8000-000000000000",
+        "sender": "human", "text": "Primeira pergunta",
+        "content": [{"type": "text", "text": "Primeira pergunta"}],
+        "created_at": "2026-10-20T12:00:00+00:00"
+      },
+      {
+        "uuid": "m2", "parent_message_uuid": "m1",
+        "sender": "assistant", "text": "Primeira resposta",
+        "content": [{"type": "text", "text": "Primeira resposta"}],
+        "created_at": "2026-10-20T12:01:00+00:00"
+      },
+      {
+        "uuid": "m3", "parent_message_uuid": "m2",
+        "sender": "human", "text": "Pergunta original",
+        "content": [{"type": "text", "text": "Pergunta original"}],
+        "created_at": "2026-10-20T12:02:00+00:00"
+      },
+      {
+        "uuid": "m4", "parent_message_uuid": "m3",
+        "sender": "assistant", "text": "Resposta à pergunta original",
+        "content": [{"type": "text", "text": "Resposta à pergunta original"}],
+        "created_at": "2026-10-20T12:03:00+00:00"
+      },
+      {
+        "uuid": "m3b", "parent_message_uuid": "m2",
+        "sender": "human", "text": "Pergunta editada",
+        "content": [{"type": "text", "text": "Pergunta editada"}],
+        "created_at": "2026-10-20T12:05:00+00:00"
+      },
+      {
+        "uuid": "m4b", "parent_message_uuid": "m3b",
+        "sender": "assistant", "text": "Resposta à pergunta editada",
+        "content": [{"type": "text", "text": "Resposta à pergunta editada"}],
+        "created_at": "2026-10-20T12:06:00+00:00"
+      }
+    ]
+  },
+  {
+    "uuid": "conv-linear",
+    "name": "Conversa sem edição",
+    "summary": "",
+    "created_at": "2026-10-21T12:00:00+00:00",
+    "updated_at": "2026-10-21T12:02:00+00:00",
+    "chat_messages": [
+      {
+        "uuid": "n1", "parent_message_uuid": "00000000-0000-4000-8000-000000000000",
+        "sender": "human", "text": "Olá",
+        "content": [{"type": "text", "text": "Olá"}],
+        "created_at": "2026-10-21T12:00:00+00:00"
+      },
+      {
+        "uuid": "n2", "parent_message_uuid": "n1",
+        "sender": "assistant", "text": "Oi!",
+        "content": [{"type": "text", "text": "Oi!"}],
+        "created_at": "2026-10-21T12:01:00+00:00"
+      },
+      {
+        "uuid": "n3", "parent_message_uuid": "n2",
+        "sender": "human", "text": "Tudo bem?",
+        "content": [{"type": "text", "text": "Tudo bem?"}],
+        "created_at": "2026-10-21T12:02:00+00:00"
+      }
+    ]
+  }
+]

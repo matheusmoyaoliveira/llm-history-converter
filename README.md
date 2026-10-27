@@ -21,11 +21,11 @@ On Windows PowerShell, activate the virtual environment with `.venv\Scripts\Acti
 ## Usage
 
 ```bash
-llm-history-converter claude path/to/conversations.json path/to/output
+llm-history-converter claude path/to/conversations-000.zip path/to/output
 ```
 
 - `claude` is the source of the export.
-- `conversations.json` is the file inside the export zip.
+- The input can be the `conversations-000.zip` file from the export, read directly without unzipping, or the `conversations.json` inside it. Exports split into several `conversations-*.zip` files are not supported yet.
 - The output folder is created if it does not exist.
 - Paths may start with `~` for your home folder, in any shell (Git Bash, PowerShell, Linux or macOS), for example `~/exports/conversations.json`.
 
@@ -35,10 +35,12 @@ Runs are incremental. The tool keeps a `.state.json` file in the output folder w
 3 novas, 2 atualizadas, 40 sem mudança
 ```
 
-That is 3 new, 2 updated and 40 unchanged conversations. To ignore the state and convert everything again, use `--full`:
+That is 3 new, 2 updated and 40 unchanged conversations. If the state has conversations that are not in the current export (the Claude export sometimes leaves conversations out), the tool lists the first 8 characters of their ids. Their Markdown files are kept.
+
+To ignore the state and convert everything again, use `--full`:
 
 ```bash
-llm-history-converter claude path/to/conversations.json path/to/output --full
+llm-history-converter claude path/to/conversations-000.zip path/to/output --full
 ```
 
 ### Output
@@ -95,7 +97,7 @@ The tests use a small fictional export in `tests/fixtures/` and pytest's tempora
 
 - **Missing conversations:** the Claude export leaves some conversations out, so they cannot be converted.
 - **Tool calls:** display cards are converted, but other tool calls (running commands, web searches, file edits) and their results are left out, as are thinking blocks, images and attached documents.
-- **Edited messages:** when a message is edited, the conversation branches. Branches are not handled: all messages are written in the order they appear in the export.
+- **Edited messages:** when a message is edited or a response is regenerated, the conversation branches. Only the latest branch is kept (the path from the first message to the most recent one, which is the version you saw last); earlier versions are dropped.
 - **Projects:** the export does not link conversations to the projects they belong to, so the output has no project information.
 
 ## Roadmap

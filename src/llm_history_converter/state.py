@@ -30,3 +30,11 @@ def classify(conversation: Conversation, state: dict[str, str]) -> str:
     if conversation.updated_at > datetime.fromisoformat(saved):
         return "updated"
     return "unchanged"
+
+
+def missing_ids(state: dict[str, str], source: str, conversations: list[Conversation]) -> list[str]:
+    current = {state_key(conversation) for conversation in conversations}
+    prefix = f"{source}:"
+    return sorted(
+        key.removeprefix(prefix) for key in state if key.startswith(prefix) and key not in current
+    )
