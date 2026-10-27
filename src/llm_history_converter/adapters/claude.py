@@ -38,6 +38,19 @@ def _to_message(raw: dict) -> Message:
     )
 
 
+def _latest_branch(messages: list[dict]) -> list[dict]:
+    if not messages or not all("uuid" in m and "parent_message_uuid" in m for m in messages):
+        return messages
+    by_id = {m["uuid"]: m for m in messages}
+    current = max(messages, key=lambda m: _parse_date(m["created_at"]))
+    path, seen = [], set()
+    while current is not None and current["uuid"] not in seen:
+        seen.add(current["uuid"])
+        path.append(current)
+        current = by_id.get(current["parent_message_uuid"])
+    return path[::-1]
+
+
 def _to_conversation(raw: dict) -> Conversation:
     return Conversation(
         id=raw["uuid"],
@@ -47,7 +60,7 @@ def _to_conversation(raw: dict) -> Conversation:
         created_at=_parse_date(raw["created_at"]),
         updated_at=_parse_date(raw["updated_at"]),
         messages=[
-            m for m in (_to_message(r) for r in raw.get("chat_messages", []))
+            m for m in (_to_message(r) for r in _latest_branch(raw.get("chat_messages", [])))
             if m.text.strip()
         ],
     )

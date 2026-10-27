@@ -95,3 +95,21 @@ def test_invalid_zip_fails_clearly(tmp_path):
     export.write_text("não é zip", encoding="utf-8")
     with pytest.raises(ValueError, match="não é um arquivo zip válido"):
         load(export)
+
+
+BRANCHES_FIXTURE = Path(__file__).parent / "fixtures" / "claude_branches_sample.json"
+
+
+def test_edited_message_keeps_only_latest_branch():
+    texts = [m.text for m in load(BRANCHES_FIXTURE)[0].messages]
+    assert texts == [
+        "Primeira pergunta",
+        "Primeira resposta",
+        "Pergunta editada",
+        "Resposta à pergunta editada",
+    ]
+
+
+def test_conversation_without_edits_keeps_all_messages_in_order():
+    texts = [m.text for m in load(BRANCHES_FIXTURE)[1].messages]
+    assert texts == ["Olá", "Oi!", "Tudo bem?"]
