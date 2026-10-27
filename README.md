@@ -21,11 +21,11 @@ On Windows PowerShell, activate the virtual environment with `.venv\Scripts\Acti
 ## Usage
 
 ```bash
-llm-history-converter claude path/to/conversations.json path/to/output
+llm-history-converter claude path/to/conversations-000.zip path/to/output
 ```
 
 - `claude` is the source of the export.
-- `conversations.json` is the file inside the export zip.
+- The input can be the `conversations-000.zip` file from the export, read directly without unzipping, or the `conversations.json` inside it. Exports split into several `conversations-*.zip` files are not supported yet.
 - The output folder is created if it does not exist.
 - Paths may start with `~` for your home folder, in any shell (Git Bash, PowerShell, Linux or macOS), for example `~/exports/conversations.json`.
 
@@ -38,7 +38,7 @@ Runs are incremental. The tool keeps a `.state.json` file in the output folder w
 That is 3 new, 2 updated and 40 unchanged conversations. To ignore the state and convert everything again, use `--full`:
 
 ```bash
-llm-history-converter claude path/to/conversations.json path/to/output --full
+llm-history-converter claude path/to/conversations-000.zip path/to/output --full
 ```
 
 ### Output

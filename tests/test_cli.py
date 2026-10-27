@@ -1,6 +1,8 @@
 from pathlib import Path
 
-from llm_history_converter.cli import build_parser, format_summary
+import pytest
+
+from llm_history_converter.cli import build_parser, format_summary, main
 
 
 def test_summary_uses_singular_for_one():
@@ -23,3 +25,10 @@ def test_paths_without_tilde_are_kept():
     args = build_parser().parse_args(["claude", "export/conversations.json", "saida"])
     assert args.input == Path("export/conversations.json")
     assert args.output == Path("saida")
+
+
+def test_missing_input_shows_clear_error(tmp_path):
+    with pytest.raises(SystemExit) as error:
+        main(["claude", str(tmp_path / "nao-existe.json"), str(tmp_path / "saida")])
+    assert str(error.value).startswith("Erro: ")
+    assert not (tmp_path / "saida").exists()

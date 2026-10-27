@@ -1,4 +1,5 @@
 import argparse
+import sys
 from pathlib import Path
 
 from llm_history_converter.adapters import claude
@@ -29,16 +30,19 @@ def build_parser() -> argparse.ArgumentParser:
         description="Converte exports de chats de IA em arquivos Markdown."
     )
     parser.add_argument("source", choices=ADAPTERS.keys(), help="De onde veio o export")
-    parser.add_argument("input", type=_path, help="Arquivo do export, como conversations.json")
+    parser.add_argument("input", type=_path, help="Arquivo do export: conversations.json ou conversations-000.zip")
     parser.add_argument("output", type=_path, help="Pasta onde os arquivos serão gravados")
     parser.add_argument("--full", action="store_true", help="Ignora o estado e converte tudo de novo")
     return parser
 
 
-def main() -> None:
-    args = build_parser().parse_args()
+def main(argv: list[str] | None = None) -> None:
+    args = build_parser().parse_args(argv)
 
-    conversations = ADAPTERS[args.source](args.input)
+    try:
+        conversations = ADAPTERS[args.source](args.input)
+    except (OSError, ValueError) as error:
+        sys.exit(f"Erro: {error}")
     state = {} if args.full else load_state(args.output)
     counts = {"new": 0, "updated": 0, "unchanged": 0}
     for conversation in conversations:

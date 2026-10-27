@@ -1,4 +1,5 @@
 import json
+import zipfile
 from datetime import datetime
 from pathlib import Path
 
@@ -7,6 +8,7 @@ from llm_history_converter.models import Conversation, Message
 
 SOURCE = "claude"
 AUTHORS = {"human": "user", "assistant": "assistant"}
+CONVERSATIONS_FILE = "conversations.json"
 
 def _parse_date(value: str) -> datetime:
     return datetime.fromisoformat(value)
@@ -50,6 +52,25 @@ def _to_conversation(raw: dict) -> Conversation:
         ],
     )
 
+def _read_export(path: Path) -> str:
+    if path.suffix != ".zip":
+        return path.read_text(encoding="utf-8")
+    if path.name.startswith("conversations-"):
+        parts = list(path.parent.glob("conversations-*.zip"))
+        if len(parts) > 1:
+            raise ValueError(
+                f"o export está dividido em {len(parts)} arquivos conversations-*.zip, "
+                "e isso ainda não é suportado"
+            )
+    try:
+        with zipfile.ZipFile(path) as archive:
+            if CONVERSATIONS_FILE not in archive.namelist():
+                raise ValueError(f"{path.name} não tem o arquivo {CONVERSATIONS_FILE}")
+            return archive.read(CONVERSATIONS_FILE).decode("utf-8")
+    except zipfile.BadZipFile:
+        raise ValueError(f"{path.name} não é um arquivo zip válido") from None
+
+
 def load(path: Path) -> list[Conversation]:
-    data = json.loads(path.read_text(encoding="utf-8"))
+    data = json.loads(_read_export(path))
     return [_to_conversation(item) for item in data]

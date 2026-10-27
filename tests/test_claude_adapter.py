@@ -1,4 +1,7 @@
+import zipfile
 from pathlib import Path
+
+import pytest
 
 from llm_history_converter.adapters.claude import load
 
@@ -59,3 +62,36 @@ def test_reads_conversation_summary():
 
 def test_empty_summary_becomes_none():
     assert load(FIXTURE)[1].summary is None
+
+
+def _zip(path: Path, files: dict[str, str]) -> Path:
+    with zipfile.ZipFile(path, "w") as archive:
+        for name, content in files.items():
+            archive.writestr(name, content)
+    return path
+
+
+def test_reads_conversations_from_zip(tmp_path):
+    content = FIXTURE.read_text(encoding="utf-8")
+    export = _zip(tmp_path / "conversations-000.zip", {"conversations.json": content})
+    assert [c.id for c in load(export)] == [c.id for c in load(FIXTURE)]
+
+
+def test_zip_without_conversations_file_fails_clearly(tmp_path):
+    export = _zip(tmp_path / "conversations-000.zip", {"outro.json": "[]"})
+    with pytest.raises(ValueError, match="não tem o arquivo conversations.json"):
+        load(export)
+
+
+def test_split_export_fails_clearly(tmp_path):
+    export = _zip(tmp_path / "conversations-000.zip", {"conversations.json": "[]"})
+    _zip(tmp_path / "conversations-001.zip", {"conversations.json": "[]"})
+    with pytest.raises(ValueError, match="dividido em 2 arquivos"):
+        load(export)
+
+
+def test_invalid_zip_fails_clearly(tmp_path):
+    export = tmp_path / "conversations-000.zip"
+    export.write_text("não é zip", encoding="utf-8")
+    with pytest.raises(ValueError, match="não é um arquivo zip válido"):
+        load(export)
