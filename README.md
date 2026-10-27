@@ -43,7 +43,7 @@ llm-history-converter claude path/to/conversations.json path/to/output --full
 
 ### Output
 
-Each conversation becomes a file named `<creation date> - <first 8 chars of the id>.md`, with the metadata in the frontmatter and dates shown in your local timezone:
+Each conversation becomes a file named `<creation date> - <first 8 chars of the id>.md`, with the metadata in the frontmatter and dates shown in your local timezone. When the export has a summary of the conversation, it goes right after the title, in a collapsed Obsidian callout (a plain quote in other Markdown viewers):
 
 ```markdown
 ---
@@ -54,6 +54,9 @@ atualizada_em: 2026-01-10T14:05:00+00:00
 ---
 
 # Planning a trip
+
+> [!summary]- Resumo
+> The user asked what to pack for a weekend trip.
 
 ## Você — 10/01/2026 11:00
 
