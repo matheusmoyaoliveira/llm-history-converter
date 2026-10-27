@@ -97,7 +97,7 @@ The tests use a small fictional export in `tests/fixtures/` and pytest's tempora
 
 - **Missing conversations:** the Claude export leaves some conversations out, so they cannot be converted.
 - **Tool calls:** display cards are converted, but other tool calls (running commands, web searches, file edits) and their results are left out, as are thinking blocks, images and attached documents.
-- **Edited messages:** when a message is edited, the conversation branches. Branches are not handled: all messages are written in the order they appear in the export.
+- **Edited messages:** when a message is edited or a response is regenerated, the conversation branches. Only the latest branch is kept (the path from the first message to the most recent one, which is the version you saw last); earlier versions are dropped.
 - **Projects:** the export does not link conversations to the projects they belong to, so the output has no project information.
 
 ## Roadmap
