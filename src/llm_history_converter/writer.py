@@ -21,6 +21,10 @@ def to_markdown(conversation: Conversation) -> str:
         f"# {conversation.title}",
         "",
     ]
+    if conversation.summary:
+        lines.append("> [!summary]- Resumo")
+        lines += [f"> {line}".rstrip() for line in conversation.summary.splitlines()]
+        lines.append("")
     for message in conversation.messages:
         label = AUTHOR_LABELS.get(message.author, message.author)
         lines.append(f"## {label} — {_format_date(message.sent_at)}")

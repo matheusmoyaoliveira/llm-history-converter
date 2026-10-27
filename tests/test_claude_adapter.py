@@ -51,3 +51,11 @@ def test_card_only_message_is_kept():
 
 def test_regular_tool_blocks_are_ignored():
     assert load(CARDS_FIXTURE)[0].messages[3].text == "Pronto."
+
+
+def test_reads_conversation_summary():
+    assert load(FIXTURE)[0].summary == "**Conversation overview**\nO usuário pediu ajuda com um teste."
+
+
+def test_empty_summary_becomes_none():
+    assert load(FIXTURE)[1].summary is None
